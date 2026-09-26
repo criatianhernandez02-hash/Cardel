@@ -19,6 +19,8 @@
     'hero.eyebrow': 'Salón de belleza · Woodland, CA',
     'hero.title': 'Un look diseñado para <em>ti</em>.',
     'hero.lede': 'Cortes, color y peinados para ocasiones especiales con Paty — quien te escucha primero, nunca te apresura y no para hasta que quede exactamente como lo imaginaste.',
+    'hero.quick': 'Reserva en menos de un minuto',
+    'hero.quickSub': 'Horarios en tiempo real, 24/7',
     'hero.card': 'Cortes · Color · Balayage · Quinceañeras · Novias',
     'p1.t': 'Primero, una consulta',
     'p1.d': 'Cada visita empieza platicando sobre lo que quieres.',
