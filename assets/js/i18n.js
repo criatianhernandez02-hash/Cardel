@@ -100,7 +100,7 @@
       err_bad_email: 'That email doesn’t look right.', err_slot_taken: 'Sorry — that time was just taken. Please pick another.',
       err_too_many: 'Too many bookings from this number. Please call the salon.',
       err_generic: 'Something went wrong. Please try again or call the salon.',
-      galleryEmpty: 'See Paty’s latest cuts, color and event styles on Instagram.', galleryBtn: 'Open Instagram',
+      galleryEmpty: 'See Paty’s latest cuts, color and event styles on Instagram.', galleryBtn: 'Open Instagram', galleryMore: 'See more on Instagram →',
       change: 'Change', langBtn: 'ES', langLabel: 'Cambiar a español'
     },
     es: {
@@ -118,7 +118,7 @@
       err_bad_email: 'Ese correo no parece correcto.', err_slot_taken: 'Lo sentimos — alguien acaba de tomar ese horario. Elige otro.',
       err_too_many: 'Demasiadas reservas con este número. Por favor llama al salón.',
       err_generic: 'Algo salió mal. Intenta de nuevo o llama al salón.',
-      galleryEmpty: 'Mira los cortes, colores y peinados más recientes de Paty en Instagram.', galleryBtn: 'Abrir Instagram',
+      galleryEmpty: 'Mira los cortes, colores y peinados más recientes de Paty en Instagram.', galleryBtn: 'Abrir Instagram', galleryMore: 'Ver más en Instagram →',
       change: 'Cambiar', langBtn: 'EN', langLabel: 'Switch to English'
     }
   };

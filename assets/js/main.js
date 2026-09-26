@@ -136,7 +136,8 @@
     g.innerHTML = C.gallery.map(function (p) {
       var alt = esc(p[L] || p.en || '');
       return '<figure><img src="' + esc(p.src) + '" alt="' + alt + '" loading="lazy" decoding="async"><figcaption>' + alt + '</figcaption></figure>';
-    }).join('');
+    }).join('') + '<p class="gallery-more"><a class="btn btn-ghost" target="_blank" rel="noopener" data-track="instagram_gallery" href="' +
+      esc(C.links.instagram) + '">' + t('galleryMore') + '</a></p>';
   }
 
   function jsonLd() {

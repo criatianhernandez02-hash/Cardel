@@ -30,7 +30,7 @@ Everything to edit is in `assets/js/config.js`:
 - [ ] **Phone number.** It's currently a placeholder, `(530) 555-0123`.
 - [ ] **Hours.** These are placeholders. Update them in `config.js` **and** in `HOURS` in `apps-script/Code.gs`.
 - [ ] **Services, prices and times.** Prices are placeholder "from" estimates.
-- [ ] **Photos.** Add 8–12 photos of her work to `assets/img/gallery/` and list them under `gallery`. Optionally add a `heroImage` and a portrait of Paty.
+- [x] **Photos.** 4 photos of her work are in `assets/img/gallery/` (one is also the hero). They are small (about 510 px tall); higher-resolution originals would look sharper, so swap them in with the same file names when available.
 - [ ] **Google reviews link** (`links.googleReviews`) and 2–4 more real review quotes.
 - [ ] **Cancellation policy wording** (in the FAQ and booking form).
 - [ ] **Booking backend.** Follow [SETUP.md](SETUP.md).

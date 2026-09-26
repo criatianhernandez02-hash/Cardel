@@ -120,8 +120,13 @@ window.CARDEL = {
   // Photos of Paty's work: put files in assets/img/gallery/ and list them here,
   // e.g. { src: 'assets/img/gallery/balayage-1.webp', en: 'Soft balayage', es: 'Balayage suave' }.
   // While this is empty the gallery shows a link to Instagram instead.
-  gallery: [],
+  gallery: [
+    { src: 'assets/img/gallery/balayage-waves.webp', en: 'Balayage with soft waves', es: 'Balayage con ondas suaves' },
+    { src: 'assets/img/gallery/blonde-waves.webp', en: 'Dimensional blonde, blown-out waves', es: 'Rubio con dimensión y ondas' },
+    { src: 'assets/img/gallery/highlights-copper.webp', en: 'Copper highlights, sleek finish', es: 'Luces cobrizas, acabado liso' },
+    { src: 'assets/img/gallery/blonde-curls.webp', en: 'Blonde curls for a special occasion', es: 'Rizos rubios para ocasión especial' }
+  ],
 
   // Optional hero photo, e.g. 'assets/img/hero.webp'. Empty = typographic hero.
-  heroImage: ''
+  heroImage: 'assets/img/gallery/balayage-waves.webp'
 };
