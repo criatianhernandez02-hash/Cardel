@@ -119,7 +119,7 @@ test('minimum notice hides slots too close to now', () => {
   const { ctx } = makeEnv();
   const now = parseLocal(TUE + ' 11:10');
   const slots = ctx.getAvailability_('mens-cut', TUE, 1, now).days[TUE];
-  assert.strictEqual(slots[0], '14:30'); // 3h notice → 14:10 → next slot 14:30
+  assert.strictEqual(slots[0], '12:30'); // 1h notice → 12:10 → next slot 12:30
 });
 
 const client = { service: 'mens-cut', date: TUE, time: '10:00', name: 'Ana Lopez', phone: '(530) 555-0199', email: 'ana@example.com' };

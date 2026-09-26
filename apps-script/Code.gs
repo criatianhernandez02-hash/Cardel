@@ -36,7 +36,7 @@ var CONFIG = {
 
   SLOT_STEP_MINUTES: 30,   // offer start times every 30 minutes
   BUFFER_MINUTES: 10,      // cleanup time kept free after each appointment
-  MIN_NOTICE_HOURS: 3,     // no bookings sooner than this from now
+  MIN_NOTICE_HOURS: 1,     // no bookings sooner than this from now (0.5 = 30 min)
   MAX_DAYS_AHEAD: 60,      // how far ahead clients can book
 
   // Service ids MUST match the ids in assets/js/config.js.

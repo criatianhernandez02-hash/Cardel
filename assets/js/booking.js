@@ -67,7 +67,7 @@
       if (h && d <= addDays(today, MAX_AHEAD)) {
         var open = toMin(h[0]), close = toMin(h[1]), seed = +d.replace(/-/g, '');
         for (var m = open; m + minutes <= close; m += 30) {
-          if (d === today && m < nowMin + 180) continue;
+          if (d === today && m < nowMin + 60) continue;
           if (((seed * 31 + m * 7) % 11) < 4) continue; // pretend some times are taken
           slots.push(pad(m));
         }
