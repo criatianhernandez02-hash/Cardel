@@ -17,20 +17,20 @@ Aim for roughly 60% white, 30% black and 10% red. Keep red for the things people
 
 ## Fonts (free, Google Fonts)
 
-- **Playfair Display** is for headlines and the logo. Use it at weight 500, with *italic* for one or two accent words.
+- **Cinzel** is for the logo only.
+- **Playfair Display** is for headlines. Use it at weight 500, with *italic* for one or two accent words.
 - **Jost** is for body text, buttons and labels (weights 400, 500 and 600). Small labels are set in capitals with wide letter spacing.
 
-## Logo (round two — pick one)
+## Logo: "The strand" (chosen)
 
-Round one (italic signature, Cd seal, boutique script) was rejected. Round two draws on how top US salons brand themselves: the name *is* the logo, set in beautiful type, with one memorable detail (Fekkai/Arrojo spaced caps, drybar/Cutler lowercase, Spoke & Weal's "&", R+Co's "+", IGK/SCK monograms, Striiike's clean + hand-made mix). The red is always that one detail.
+**CARDEL ⟋ DESIGNS** is set in **Cinzel** (weight 500, capitals, letter-spacing 0.1em). A red strand of hair joins the two words: two curved strokes, one thick and one thin. The strand is the only red in the logo, and it's the one detail people remember.
 
-1. **Couture**: CARDEL in Bodoni Moda caps, widely spaced, over a fine red line
-2. **Soft lowercase**: "cardel designs." in Josefin Sans, "designs." in red
-3. **The strand**: CARDEL ⟋ DESIGNS in Marcellus, joined by a red hair-strand stroke
-4. **Interlocked monogram**: a red C overlapping a black D (Bodoni Moda) in a fine frame
-5. **Script accent**: CARDEL in Cormorant Garamond caps with a red Allura "Designs"
+- Under the name, "HAIR SALON · WOODLAND, CA" goes in Jost, small, with very wide letter-spacing.
+- On black, the words are white and the strand is the brighter red `#FF2A2A`. On red, everything is white.
+- The icon is "C ⟋ D" in white on a black circle, with the red strand. Use it for profile pictures and the browser tab icon.
+- The website draws the logo with live text plus a small SVG strand (`.logo` in `assets/css/styles.css`).
 
-Note: the research could only read text descriptions of these logos (the salons' sites and image hosts were blocked), so the inspiration is at the level of style, not traced shapes.
+How we got here: round 1 was rejected. Round 2 offered five ideas based on top US salons, and "the strand" won; its idea is one memorable connector, like Spoke & Weal's "&" or R+Co's "+". Round 3 tried it in five fonts, and Cinzel was chosen.
 
 ## Voice
 
