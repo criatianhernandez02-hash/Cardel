@@ -1,16 +1,16 @@
-/* Cardel Designs — warm ivory, deep plum ink, rose-copper accent */
+/* Cardel Designs — white, noir and true red */
 :root {
   --bg: #ffffff;
-  --bg-alt: #f8ecee;        /* Blush */
+  --bg-alt: #f4f2f2;        /* Mist */
   --surface: #ffffff;
   --ink: #121012;           /* Noir */
   --ink-2: #3d3538;
   --muted: #5e5658;         /* Smoke */
   --line: #ece4e5;
-  --accent: #b8102e;        /* Cardel Red: the one "act now" colour */
+  --accent: #cc0000;        /* Cardel Red: the one "act now" colour */
   --accent-ink: #ffffff;
-  --accent-hover: #8e0c24;  /* Garnet */
-  --copper: #b8102e;
+  --accent-hover: #990000;  /* Oxblood */
+  --copper: #cc0000;
   --dark: #121012;
   --dark-2: #221d20;
   --ok: #2f7a4f;
@@ -111,7 +111,7 @@ p { margin: 0 0 1em; }
 .hero-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: .95rem; color: var(--ink-2); }
 .hero-facts a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
 .hero-facts a:hover { color: var(--accent); }
-.stars { color: #b8102e; letter-spacing: .08em; }
+.stars { color: #cc0000; letter-spacing: .08em; }
 .rating-chip strong { color: var(--ink); }
 .open-status { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; }
 .open-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #b3a8ab; }
@@ -120,7 +120,7 @@ p { margin: 0 0 1em; }
 .hero-art {
   position: relative; aspect-ratio: 4 / 5; max-width: 440px; width: 100%; justify-self: center;
   border-radius: 220px 220px 24px 24px; background:
-    radial-gradient(90% 60% at 50% 0%, rgba(184, 16, 46, .55) 0%, transparent 70%),
+    radial-gradient(90% 60% at 50% 0%, rgba(204, 0, 0, .55) 0%, transparent 70%),
     #121012;
   box-shadow: var(--shadow); display: grid; place-items: center; overflow: hidden;
 }
@@ -133,7 +133,7 @@ p { margin: 0 0 1em; }
 .hero-card { position: relative; text-align: center; color: #f7eae1; padding: 24px; display: grid; gap: 10px; justify-items: center; }
 .hero-card-script { font: italic 500 clamp(4rem, 14vw, 6rem)/1 var(--display); color: #ffffff; }
 .hero-card-sub { text-transform: uppercase; letter-spacing: .3em; font-size: .72rem; font-weight: 600; }
-.hero-card-line { width: 48px; height: 1px; background: #e0213f; margin: 10px 0; }
+.hero-card-line { width: 48px; height: 1px; background: #ff2a2a; margin: 10px 0; }
 .hero-card-list { font: italic 500 1.15rem/1.5 var(--display); max-width: 16em; color: #d9cfd1; }
 
 /* Promise strip */
@@ -174,7 +174,7 @@ p { margin: 0 0 1em; }
 @media (min-width: 900px) { .about-grid { grid-template-columns: 380px 1fr; gap: 80px; } }
 .about-portrait {
   aspect-ratio: 1; max-width: 320px; width: 70%; justify-self: center; border-radius: 50%;
-  background: radial-gradient(80% 80% at 30% 20%, #b8102e, #121012); display: grid; place-items: center;
+  background: radial-gradient(80% 80% at 30% 20%, #cc0000, #121012); display: grid; place-items: center;
   box-shadow: inset 0 0 0 10px var(--bg-alt), inset 0 0 0 11px var(--accent);
 }
 .about-portrait span { font: italic 500 8rem/1 var(--display); color: #fff; opacity: .9; }
@@ -231,7 +231,7 @@ p { margin: 0 0 1em; }
   width: 100%; min-height: 50px; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px;
   font: 400 16px/1.4 var(--body); color: var(--ink); background: #fff;
 }
-.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(184, 16, 46, .15); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(204, 0, 0, .15); }
 select.input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px; }
 textarea.input { resize: vertical; }
 .svc-summary { color: var(--muted); font-size: .92rem; margin: 10px 0 20px; min-height: 1.6em; }

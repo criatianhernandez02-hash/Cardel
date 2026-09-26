@@ -7,10 +7,10 @@ The full visual kit (logo options, how the brand looks on the website, Instagram
 | Name | Hex | Use |
 |---|---|---|
 | Noir | `#121012` | Text, logo, dark sections |
-| Cardel Red | `#B8102E` | Book buttons and accents only |
+| Cardel Red | `#CC0000` | Book buttons and accents only |
 | White | `#FFFFFF` | Backgrounds |
-| Garnet | `#8E0C24` | Hover / pressed red |
-| Blush | `#F8ECEE` | Soft background panels |
+| Oxblood | `#990000` | Hover / pressed red |
+| Mist | `#F4F2F2` | Soft background panels |
 | Smoke | `#5E5658` | Small secondary text |
 
 Aim for roughly 60% white, 30% black and 10% red. Keep red for the things people should tap.
