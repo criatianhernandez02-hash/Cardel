@@ -75,9 +75,9 @@ function test(name, fn) {
   catch (e) { console.error('  ✗ ' + name + '\n    ' + e.message); process.exitCode = 1; }
 }
 
-// Monday 2026-10-05 08:00 local — Tuesday 10/06 is an open day (10:00–18:00).
+// Monday 2026-10-05 08:00 local — Thursday 10/08 is an open day (10:00–18:00).
 const NOW = parseLocal('2026-10-05 08:00');
-const TUE = '2026-10-06';
+const TUE = '2026-10-08'; // an open day (Thursday)
 
 console.log('Booking backend');
 
@@ -105,7 +105,7 @@ test('an event she adds by hand blocks that time (plus buffer)', () => {
 
 test('all-day event (vacation) blocks the whole day', () => {
   const { ctx, events } = makeEnv();
-  events.push({ allDay: true, start: parseLocal(TUE + ' 00:00'), end: parseLocal('2026-10-07 00:00') });
+  events.push({ allDay: true, start: parseLocal(TUE + ' 00:00'), end: parseLocal('2026-10-09 00:00') });
   assert.strictEqual(ctx.getAvailability_('mens-cut', TUE, 1, NOW).days[TUE].length, 0);
 });
 
@@ -168,7 +168,7 @@ test('throttles repeated bookings from one phone number', () => {
 test('DST change day (Nov 1 2026) still produces correct local times', () => {
   const { ctx, events } = makeEnv();
   const now = parseLocal('2026-10-30 08:00');
-  const sat = '2026-10-31', tue = '2026-11-03';
+  const sat = '2026-10-31', tue = '2026-11-05';
   const r = ctx.book_({ ...client, date: tue, time: '15:00' }, now);
   assert.ok(r.ok);
   assert.strictEqual(formatLocal(events[0].start, 'yyyy-MM-dd HH:mm'), tue + ' 15:00');

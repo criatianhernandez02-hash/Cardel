@@ -35,7 +35,7 @@ window.CARDEL = {
   hours: {
     0: null,
     1: null,
-    2: ['10:00', '18:00'],
+    2: null,
     3: ['11:00', '19:00'],
     4: ['10:00', '18:00'],
     5: ['10:00', '19:00'],
@@ -44,7 +44,7 @@ window.CARDEL = {
 
   // The Google Apps Script web-app URL from SETUP.md. Empty = demo mode
   // (the booking calendar works but shows sample times and books nothing).
-  bookingEndpoint: '',
+  bookingEndpoint: 'https://script.google.com/macros/s/AKfycbw7_fY7GXC4NlSPfp6rItCy9Y49vB_LPXRUU3_fv49ra1SiibMR7t4RNzx1ERKkDKyy/exec',
 
   // Services. ids MUST match SERVICES in apps-script/Code.gs.
   // price = "from" price in dollars. TODO: confirm every price with Paty.

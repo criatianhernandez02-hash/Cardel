@@ -28,12 +28,12 @@ This runs the real `Code.gs` against a fake calendar. It checks business hours, 
 Everything to edit is in `assets/js/config.js`:
 
 - [ ] **Phone number.** It's currently a placeholder, `(530) 555-0123`.
-- [ ] **Hours.** These are placeholders. Update them in `config.js` **and** in `HOURS` in `apps-script/Code.gs`.
+- [ ] **Hours.** Currently Wed 11–7, Thu 10–6, Fri 10–7, Sat 9–4, closed Sun–Tue (matches the deployed script) — confirm with Paty. Update them in `config.js` **and** in `HOURS` in `apps-script/Code.gs`.
 - [ ] **Services, prices and times.** Prices are placeholder "from" estimates.
 - [x] **Photos.** 4 photos of her work are in `assets/img/gallery/` (one is also the hero). They are small (about 510 px tall); higher-resolution originals would look sharper, so swap them in with the same file names when available.
 - [ ] **Google reviews link** (`links.googleReviews`) and 2–4 more real review quotes.
 - [ ] **Cancellation policy wording** (in the FAQ and booking form).
-- [ ] **Booking backend.** Follow [SETUP.md](SETUP.md).
+- [x] **Booking backend.** Connected: the Apps Script web app is deployed on Paty’s account and `bookingEndpoint` is set. If hours change, update `HOURS` in the script (then Deploy → Manage deployments → new version) **and** `hours` in `config.js`.
 
 ## Hosting
 
