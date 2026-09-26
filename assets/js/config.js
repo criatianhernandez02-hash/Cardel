@@ -127,6 +127,9 @@ window.CARDEL = {
     { src: 'assets/img/gallery/blonde-curls.webp', en: 'Blonde curls for a special occasion', es: 'Rizos rubios para ocasión especial' }
   ],
 
+  // Photo of Paty for the "Meet your stylist" circle. Empty = red "P" monogram.
+  portrait: 'assets/img/paty.webp',
+
   // Optional hero photo, e.g. 'assets/img/hero.webp'. Empty = typographic hero.
   heroImage: 'assets/img/gallery/balayage-waves.webp'
 };

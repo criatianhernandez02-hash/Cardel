@@ -85,6 +85,16 @@
 
   }
 
+  function renderPortrait() {
+    var el = $('.about-portrait');
+    if (!C.portrait || !el) return;
+    el.classList.add('has-photo');
+    el.style.backgroundImage = 'url("' + C.portrait + '")';
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', I18N.lang === 'es' ? 'Paty, estilista y dueña de Cardel Designs' : 'Paty, owner and stylist at Cardel Designs');
+    el.removeAttribute('aria-hidden');
+  }
+
   function renderCollage() {
     var L = I18N.lang, box = $('#heroCollage');
     var photos = C.gallery.slice(0, 3);
@@ -208,7 +218,7 @@
   }, { passive: true });
 
   function renderAll() {
-    renderStatic(); renderCollage(); renderHours(); renderMenu(); renderReviews(); renderGallery();
+    renderStatic(); renderPortrait(); renderCollage(); renderHours(); renderMenu(); renderReviews(); renderGallery();
     revealOnScroll();
   }
 
