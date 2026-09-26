@@ -17,8 +17,7 @@ Aim for roughly 60% white, 30% black and 10% red. Keep red for the things people
 
 ## Fonts (free, Google Fonts)
 
-- **Cinzel** is for the logo only.
-- **Playfair Display** is for headlines. Use it at weight 500, with *italic* for one or two accent words.
+- **Cinzel** is for the logo, headlines and titles (one font everywhere). Accent words go red, never italic.
 - **Jost** is for body text, buttons and labels (weights 400, 500 and 600). Small labels are set in capitals with wide letter spacing.
 
 ## Logo: "The strand" (chosen)

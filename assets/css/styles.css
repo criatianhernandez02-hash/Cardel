@@ -17,7 +17,7 @@
   --err: #a8102a;
   --radius: 14px;
   --shadow: 0 1px 2px rgba(18, 16, 18, .06), 0 8px 24px rgba(18, 16, 18, .08);
-  --display: 'Playfair Display', Georgia, serif;
+  --display: 'Cinzel', Georgia, serif;
   --body: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --bar-h: 64px;
 }
@@ -33,8 +33,9 @@ body {
 img { max-width: 100%; display: block; }
 a { color: var(--accent); }
 h1, h2, h3, h4 { margin: 0 0 .4em; line-height: 1.1; font-weight: 600; }
-h1, h2 { font-family: var(--display); letter-spacing: -.01em; }
-h2 { font-size: clamp(2rem, 5vw, 3rem); }
+h1, h2 { font-family: var(--display); font-weight: 500; letter-spacing: .02em; }
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+h2 { font-size: clamp(1.7rem, 4.2vw, 2.6rem); }
 p { margin: 0 0 1em; }
 .wrap { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 16px; }
 @media (min-width: 700px) { .wrap { padding: 0 28px; } }
@@ -101,7 +102,7 @@ p { margin: 0 0 1em; }
 .hero { padding: 40px 0 56px; overflow: hidden; }
 .hero-grid { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 900px) { .hero { padding: 72px 0 96px; } .hero-grid { grid-template-columns: 1.15fr .85fr; gap: 64px; } }
-.hero h1 { font-size: clamp(2.8rem, 9vw, 5.2rem); line-height: .98; margin-bottom: .35em; }
+.hero h1 { font-size: clamp(2.1rem, 6.4vw, 3.9rem); line-height: 1.08; margin-bottom: .35em; }
 .hero h1 em { color: var(--accent); }
 .lede { font-size: 1.15rem; color: var(--ink-2); max-width: 36em; }
 .se-habla { color: var(--accent); }
@@ -133,7 +134,7 @@ p { margin: 0 0 1em; }
 .hero-card { position: relative; text-align: center; color: #f7eae1; padding: 24px; display: grid; gap: 10px; justify-items: center; }
 .hero-card-sub { text-transform: uppercase; letter-spacing: .3em; font-size: .72rem; font-weight: 600; }
 .hero-card-line { width: 48px; height: 1px; background: #ff2a2a; margin: 10px 0; }
-.hero-card-list { font: italic 500 1.15rem/1.5 var(--display); max-width: 16em; color: #d9cfd1; }
+.hero-card-list { font: 500 1rem/1.6 var(--display); letter-spacing: .06em; max-width: 18em; color: #d9cfd1; }
 
 /* Promise strip */
 .promise { background: var(--dark); color: #ffffff; padding: 36px 0; }
@@ -176,11 +177,11 @@ p { margin: 0 0 1em; }
   background: radial-gradient(80% 80% at 30% 20%, #cc0000, #121012); display: grid; place-items: center;
   box-shadow: inset 0 0 0 10px var(--bg-alt), inset 0 0 0 11px var(--accent);
 }
-.about-portrait span { font: italic 500 8rem/1 var(--display); color: #fff; opacity: .9; }
+.about-portrait span { font: 500 7rem/1 var(--display); color: #fff; opacity: .9; }
 .about-portrait.has-photo { background-size: cover; background-position: center; }
 .about-portrait.has-photo span { display: none; }
 .about-grid p { color: var(--ink-2); font-size: 1.05rem; max-width: 38em; }
-.about-sign { font: italic 500 1.7rem/1 var(--display) !important; color: var(--accent) !important; }
+.about-sign { font: 500 1.4rem/1 var(--display) !important; letter-spacing: .08em; color: var(--accent) !important; }
 .about-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
 
 /* Gallery */
@@ -193,7 +194,7 @@ p { margin: 0 0 1em; }
 .gallery-empty {
   border: 1.5px dashed #d9c3c7; border-radius: var(--radius); padding: 40px 24px; text-align: center; background: var(--surface);
 }
-.gallery-empty p { font: 500 1.4rem/1.3 var(--display); max-width: 26em; margin: 0 auto 20px; }
+.gallery-empty p { font: 500 1.2rem/1.4 var(--display); max-width: 26em; margin: 0 auto 20px; }
 .gallery-empty .btn { white-space: normal; text-align: center; line-height: 1.3; padding-top: 10px; padding-bottom: 10px; }
 
 /* Reviews */
@@ -204,7 +205,7 @@ p { margin: 0 0 1em; }
 .stars-lg { font-size: 1.5rem; margin: 6px 0; }
 .reviews-list { display: grid; gap: 20px; }
 .review { margin: 0; background: var(--dark-2); border-radius: var(--radius); padding: 28px; }
-.review blockquote { margin: 8px 0 14px; font: italic 500 clamp(1.3rem, 3vw, 1.7rem)/1.35 var(--display); color: #ffffff; }
+.review blockquote { margin: 8px 0 14px; font: 500 clamp(1.1rem, 2.4vw, 1.4rem)/1.5 var(--display); letter-spacing: .02em; color: #ffffff; }
 .review figcaption { color: #d9cfd1; font-size: .9rem; }
 
 /* Booking */
