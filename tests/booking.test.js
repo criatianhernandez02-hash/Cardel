@@ -47,7 +47,18 @@ function makeEnv() {
     },
     getName: () => 'Paty'
   };
-  const cache = {};
+  const cache = {}, props = {};
+  let sheetBroken = false;
+  const makeSheet = name => {
+    const sh = { name, rows: [],
+      setName(n) { sh.name = n; }, appendRow(r) { sh.rows.push(r.slice()); }, setFrozenRows() {},
+      getDataRange: () => ({ getValues: () => sh.rows.map(r => r.slice()) }),
+      getRange: (row, col, nr, nc) => ({ setValues: v => { sh.rows[row - 1] = v[0].slice(); } }) };
+    return sh;
+  };
+  const ss = { created: 0, sheets: [makeSheet('Sheet1')], getId: () => 'sheet-1', getUrl: () => 'https://sheet',
+    getSheets() { return ss.sheets; }, insertSheet(n) { const sh = makeSheet(n); ss.sheets.push(sh); return sh; },
+    getSheetByName(n) { return ss.sheets.find(x => x.name === n); } };
   const ctx = {
     CalendarApp: {
       getDefaultCalendar: () => cal, getCalendarById: () => cal,
@@ -62,11 +73,16 @@ function makeEnv() {
       createTextOutput: s => ({ setMimeType() { return { body: s }; } }),
       MimeType: { JSON: 'json' }
     },
-    Logger: { log() {} }
+    Logger: { log() {} },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: k => props[k] || null, setProperty: (k, v) => { props[k] = v; } }) },
+    SpreadsheetApp: {
+      create: () => { if (sheetBroken) throw new Error('no drive'); ss.created++; return ss; },
+      openById: () => ss
+    }
   };
   vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../apps-script/Code.gs'), 'utf8'), ctx);
-  return { ctx, events };
+  return { ctx, events, ss, breakSheet: () => { sheetBroken = true; } };
 }
 
 let passed = 0;
@@ -203,6 +219,44 @@ test('silly lengths fall back to the service default', () => {
   const { ctx, events } = makeEnv();
   assert.ok(ctx.book_({ ...client, minutes: 9999, time: '10:00' }, NOW).ok);
   assert.strictEqual(formatLocal(events[0].end, 'yyyy-MM-dd HH:mm'), TUE + ' 10:30');
+});
+
+console.log('Client list (Google Sheet)');
+
+test('a booking is saved to Bookings and Clients', () => {
+  const { ctx, ss } = makeEnv();
+  assert.ok(ctx.book_(client, NOW).ok);
+  const bookings = ss.getSheetByName('Bookings').rows, clients = ss.getSheetByName('Clients').rows;
+  assert.strictEqual(bookings.length, 2);            // header + 1
+  assert.strictEqual(bookings[1][4], 'Ana Lopez');
+  assert.strictEqual(clients[1][1], '(530) 555-0199');
+  assert.strictEqual(clients[1][6], 1);
+});
+
+test('the same phone number updates one client row', () => {
+  const { ctx, ss } = makeEnv();
+  ctx.book_(client, NOW);
+  ctx.book_({ ...client, time: '13:00', phone: '530-555-0199', service: 'balayage' }, NOW);
+  const clients = ss.getSheetByName('Clients').rows;
+  assert.strictEqual(clients.length, 2);              // header + 1 client
+  assert.strictEqual(clients[1][6], 2);
+  assert.strictEqual(clients[1][7], 'Balayage');
+  assert.strictEqual(ss.created, 1);                  // spreadsheet created once
+});
+
+test('formulas typed into the form are stored as plain text', () => {
+  const { ctx, ss } = makeEnv();
+  ctx.book_({ ...client, name: '=HYPERLINK("x")', notes: '+1 test' }, NOW);
+  const row = ss.getSheetByName('Bookings').rows[1];
+  assert.strictEqual(row[4], `'=HYPERLINK("x")`);
+  assert.strictEqual(row[8], "'+1 test");
+});
+
+test('a spreadsheet problem never blocks the booking', () => {
+  const { ctx, events, breakSheet } = makeEnv();
+  breakSheet();
+  assert.ok(ctx.book_(client, NOW).ok);
+  assert.strictEqual(events.length, 1);
 });
 
 console.log(`\n${passed} passed`);

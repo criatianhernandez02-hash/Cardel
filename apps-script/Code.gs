@@ -69,7 +69,12 @@ var CONFIG = {
   INVITE_CLIENT: true,
 
   // Also email the owner a short "New online booking" message.
-  NOTIFY_OWNER_EMAIL: true
+  NOTIFY_OWNER_EMAIL: true,
+
+  // Save every online booking to a Google Sheet in the owner's Drive
+  // ("Cardel Designs — Clients", created automatically on the first booking).
+  // Run openClientSheet() from the editor to get its link.
+  SAVE_TO_SHEET: true
 };
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -258,6 +263,17 @@ function book_(body, now) {
 
     cache.put(throttleKey, String(recent + 1), 3600);
 
+    if (CONFIG.SAVE_TO_SHEET) {
+      // Never let a spreadsheet problem stop a booking.
+      try {
+        saveClient_({
+          when: start, service: service.name, minutes: service.minutes,
+          name: name, phone: phone, email: email, notes: notes,
+          lang: body.lang === 'es' ? 'Spanish' : 'English'
+        }, now);
+      } catch (err) { Logger.log('Client sheet error: ' + err); }
+    }
+
     if (CONFIG.NOTIFY_OWNER_EMAIL) {
       try {
         MailApp.sendEmail(Session.getEffectiveUser().getEmail(),
@@ -329,9 +345,69 @@ function weekday_(dateStr) {
   return new Date(Date.UTC(Number(p[0]), Number(p[1]) - 1, Number(p[2]))).getUTCDay();
 }
 
-/** Run once from the editor to grant calendar + email permissions. */
+// ─── Client list (Google Sheet) ─────────────────────────────────────────────
+
+var BOOKING_HEADERS = ['Booked at', 'Appointment', 'Service', 'Minutes', 'Name', 'Phone', 'Email', 'Language', 'Notes'];
+var CLIENT_HEADERS = ['Name', 'Phone', 'Email', 'Language', 'First booking', 'Last appointment', 'Online bookings', 'Last service', 'Notes'];
+
+/** The client spreadsheet, created on first use; its id is remembered in Script Properties. */
+function clientSheet_() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('CLIENT_SHEET_ID');
+  if (id) {
+    try { return SpreadsheetApp.openById(id); } catch (gone) {}
+  }
+  var ss = SpreadsheetApp.create('Cardel Designs — Clients');
+  var bookings = ss.getSheets()[0];
+  bookings.setName('Bookings');
+  bookings.appendRow(BOOKING_HEADERS);
+  bookings.setFrozenRows(1);
+  var clients = ss.insertSheet('Clients');
+  clients.appendRow(CLIENT_HEADERS);
+  clients.setFrozenRows(1);
+  props.setProperty('CLIENT_SHEET_ID', ss.getId());
+  return ss;
+}
+
+/** Text typed on the website, made safe for a cell (no formulas). */
+function cell_(v) {
+  v = String(v == null ? '' : v);
+  return /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+/** Add the booking to "Bookings" and add or update the client in "Clients" (matched by phone). */
+function saveClient_(b, now) {
+  var ss = clientSheet_();
+  var fmt = function (d) { return Utilities.formatDate(d, CONFIG.TIMEZONE, 'yyyy-MM-dd HH:mm'); };
+  ss.getSheetByName('Bookings').appendRow([
+    fmt(now), fmt(b.when), cell_(b.service), b.minutes, cell_(b.name), cell_(b.phone), cell_(b.email), b.lang, cell_(b.notes)
+  ]);
+
+  var clients = ss.getSheetByName('Clients');
+  var key = b.phone.replace(/\D/g, '').slice(-10);
+  var rows = clients.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][1]).replace(/\D/g, '').slice(-10) === key) {
+      var r = rows[i];
+      clients.getRange(i + 1, 1, 1, CLIENT_HEADERS.length).setValues([[
+        cell_(b.name) || r[0], r[1], cell_(b.email) || r[2], b.lang, r[4], fmt(b.when),
+        (Number(r[6]) || 0) + 1, cell_(b.service), cell_(b.notes) || r[8]
+      ]]);
+      return;
+    }
+  }
+  clients.appendRow([cell_(b.name), cell_(b.phone), cell_(b.email), b.lang, fmt(now), fmt(b.when), 1, cell_(b.service), cell_(b.notes)]);
+}
+
+/** Run from the editor to print the link to the client spreadsheet. */
+function openClientSheet() {
+  Logger.log('Client list: ' + clientSheet_().getUrl());
+}
+
+/** Run once from the editor to grant calendar, email and spreadsheet permissions. */
 function authorize() {
   CalendarApp.getDefaultCalendar().getName();
   MailApp.getRemainingDailyQuota();
-  Logger.log('Authorized. Next: Deploy → New deployment → Web app.');
+  Logger.log('Client list: ' + clientSheet_().getUrl());
+  Logger.log('Authorized. Next: Deploy → Manage deployments → New version.');
 }

@@ -62,6 +62,7 @@
     'f.optional2': '(opcional)',
     'f.notesPh': 'Largo del cabello, color actual, fotos de inspiración que traerás…',
     'f.policy': '¿Necesitas cancelar o cambiar tu cita? Llama con al menos 24 horas de anticipación para que otra persona pueda tomar el lugar.',
+    'f.privacy': 'Tus datos solo se usan para administrar tus citas con Cardel Designs y nunca se venden ni se comparten.',
     'f.confirm': 'Confirmar cita',
     'done.title': '¡Tu cita está confirmada!',
     'done.addCal': 'Agregar a mi calendario',
