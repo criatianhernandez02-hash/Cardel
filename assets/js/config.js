@@ -52,14 +52,18 @@ window.CARDEL = {
     olaplex: { price: 50, minutes: 15,
       en: 'Add Olaplex bond protection', es: 'Agregar protección Olaplex', short: { en: 'Olaplex', es: 'Olaplex' } },
     protein: { price: 40, minutes: 15,
-      en: 'Add a protein mask', es: 'Agregar mascarilla de proteína', short: { en: 'Protein Mask', es: 'Mascarilla de proteína' } }
+      en: 'Add a protein mask', es: 'Agregar mascarilla de proteína', short: { en: 'Protein Mask', es: 'Mascarilla de proteína' } },
+    wash: { price: 15, minutes: 15,
+      en: 'Add a hair wash', es: 'Agregar lavado', short: { en: 'Wash', es: 'Lavado' } },
+    blowdry: { price: 10, minutes: 30,
+      en: 'Add a blow-dry', es: 'Agregar secado', short: { en: 'Blow-Dry', es: 'Secado' } }
   },
 
   // Services. price in dollars; from: true shows "from $X", false shows the exact price.
   // addons = which add-ons a group's services can take.
   serviceGroups: [
     {
-      id: 'color', en: "Color", es: "Color", addons: ['haircut', 'olaplex', 'protein'],
+      id: 'color', en: "Color", es: "Color", addons: ['haircut', 'olaplex', 'protein', 'blowdry'],
       services: [
         { id: 'double-process', minutes: 180, price: 250, from: true,
           en: ["Double Process / Fashion Color", "Lift and tone for bold, vivid or fashion shades."],
@@ -104,7 +108,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'cuts', en: "Cuts", es: "Cortes", addons: ['protein'],
+      id: 'cuts', en: "Cuts", es: "Cortes", addons: ['wash', 'blowdry', 'protein'],
       services: [
         { id: 'womens-cut', minutes: 45, price: 45, from: true,
           en: ["Women's Haircut", "Consultation, cut and style."],
@@ -127,7 +131,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'treatments', en: "Treatments & Smoothing", es: "Tratamientos y alaciado", addons: ['haircut', 'protein'],
+      id: 'treatments', en: "Treatments & Smoothing", es: "Tratamientos y alaciado", addons: ['haircut', 'protein', 'blowdry'],
       services: [
         { id: 'keratin', minutes: 180, price: 250, from: false,
           en: ["Keratin Treatment", "Smooth, frizz-free hair for weeks."],
