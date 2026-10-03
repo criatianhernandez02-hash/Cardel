@@ -29,7 +29,7 @@ Everything to edit is in `assets/js/config.js`:
 
 - [x] **Phone number.** (530) 867-0883, confirmed.
 - [ ] **Hours.** Currently Wed 11–7, Thu 10–6, Fri 10–7, Sat 9–4, closed Sun–Tue (matches the deployed script) — confirm with Paty. Update them in `config.js` **and** in `HOURS` in `apps-script/Code.gs`.
-- [x] **Services and prices.** Real menu from Paty (Oct 2026), with haircut (+$45) and Olaplex (+$30) add-ons. Service lengths are estimates — adjust `minutes` in `config.js`.
+- [x] **Services and prices.** Real menu from Paty (Oct 2026), with haircut (+$45) and Olaplex (+$30) add-ons; women's cut from $45, men's from $35. Service lengths are estimates — adjust `minutes` in `config.js`.
 - [x] **Photos.** 4 photos of her work are in `assets/img/gallery/` (one is also the hero). They are small (about 510 px tall); higher-resolution originals would look sharper, so swap them in with the same file names when available.
 - [ ] **Google reviews link** (`links.googleReviews`) and 2–4 more real review quotes.
 - [ ] **Cancellation policy wording** (in the FAQ and booking form).
