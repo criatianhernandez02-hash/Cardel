@@ -130,9 +130,12 @@ a.pill:hover { border-color: var(--ink); color: var(--ink); }
 .btn-soft { background: var(--bg-alt); color: var(--ink); }
 .btn-soft:hover { background: var(--ink); color: #fff; }
 .btn-primary { box-shadow: 0 8px 20px rgba(204, 0, 0, .22); }
-.hero-addr { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; color: var(--ink-2); text-decoration: none; font-size: .95rem; }
-.hero-addr-go { color: var(--accent); font-weight: 600; }
-.hero-addr:hover .hero-addr-go { text-decoration: underline; text-underline-offset: 3px; }
+.hero-addr { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-height: 40px; color: var(--ink-2); text-decoration: none; font-size: .95rem; }
+.hero-addr-go {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px; border-radius: 999px;
+  background: var(--bg-alt); color: var(--ink); font-weight: 600; font-size: .88rem; transition: background .15s, color .15s;
+}
+.hero-addr:hover .hero-addr-go { background: var(--ink); color: #fff; }
 .stars { color: #cc0000; letter-spacing: .08em; }
 .open-status { display: inline-flex; align-items: center; gap: 8px; }
 .open-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #b3a8ab; }
