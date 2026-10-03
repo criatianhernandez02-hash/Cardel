@@ -264,7 +264,7 @@
     var payload = {
       service: state.service, date: state.date, time: state.time,
       name: f.name.value.trim(), phone: f.phone.value.trim(), email: f.email.value.trim(),
-      notes: f.notes.value.trim(), website: f.website.value, lang: I18N.lang,
+      notes: f.notes.value.trim(), referredBy: f.referredBy.value.trim(), website: f.website.value, lang: I18N.lang,
       minutes: current().minutes, label: current().labelEn, displayLabel: current().label
     };
     var local = payload.name.length < 2 ? 'missing_name'
@@ -325,6 +325,12 @@
     if (step === 2 && Object.keys(state.days).length) { renderChosen(); renderDates(); renderSlots(); }
     if (step === 3) renderChosen();
   });
+
+  // A shared link like ...?ref=Maria pre-fills "Referred by".
+  try {
+    var refParam = new URLSearchParams(location.search).get('ref');
+    if (refParam) $('#fRef').value = refParam.slice(0, 80);
+  } catch (e) {}
 
   $('#demoBanner').hidden = !DEMO;
   renderServiceSelect();

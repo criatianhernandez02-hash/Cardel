@@ -53,7 +53,9 @@ function makeEnv() {
     const sh = { name, rows: [],
       setName(n) { sh.name = n; }, appendRow(r) { sh.rows.push(r.slice()); }, setFrozenRows() {},
       getDataRange: () => ({ getValues: () => sh.rows.map(r => r.slice()) }),
-      getRange: (row, col, nr, nc) => ({ setValues: v => { sh.rows[row - 1] = v[0].slice(); } }) };
+      getLastRow: () => sh.rows.length,
+      getRange: (row, col, nr, nc) => ({ setValues: v => { sh.rows[row - 1] = v[0].slice(); },
+        insertCheckboxes: () => { sh.checkboxes = (sh.checkboxes || 0) + 1; }, setFormula: f => { sh.formula = f; } }) };
     return sh;
   };
   const ss = { created: 0, sheets: [makeSheet('Sheet1')], getId: () => 'sheet-1', getUrl: () => 'https://sheet',
@@ -257,6 +259,26 @@ test('a spreadsheet problem never blocks the booking', () => {
   breakSheet();
   assert.ok(ctx.book_(client, NOW).ok);
   assert.strictEqual(events.length, 1);
+});
+
+console.log('Referral tracking');
+
+test('a booking with "referred by" lands on the Referrals tab with tick boxes', () => {
+  const { ctx, ss, events } = makeEnv();
+  assert.ok(ctx.book_({ ...client, referredBy: 'Maria Gomez' }, NOW).ok);
+  const refs = ss.getSheetByName('Referrals');
+  assert.strictEqual(refs.rows.length, 2);
+  assert.strictEqual(refs.rows[1][1], 'Ana Lopez');
+  assert.strictEqual(refs.rows[1][4], 'Maria Gomez');
+  assert.strictEqual(refs.checkboxes, 1);
+  assert.ok(ss.getSheetByName('Top referrers').formula.startsWith('=QUERY('));
+  assert.ok(events[0].opts.description.includes('Referred by: Maria Gomez'));
+});
+
+test('no referral = no Referrals tab row', () => {
+  const { ctx, ss } = makeEnv();
+  ctx.book_(client, NOW);
+  assert.strictEqual(ss.getSheetByName('Referrals'), undefined);
 });
 
 console.log(`\n${passed} passed`);

@@ -218,6 +218,7 @@ function book_(body, now) {
   var phone = clean_(body.phone, 30);
   var email = clean_(body.email, 120);
   var notes = clean_(body.notes, 500);
+  var referredBy = clean_(body.referredBy, 80);
   if (name.length < 2) return { ok: false, error: 'missing_name' };
   if (phone.replace(/\D/g, '').length < 10) return { ok: false, error: 'bad_phone' };
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: 'bad_email' };
@@ -250,6 +251,7 @@ function book_(body, now) {
       email ? 'Email: ' + email : null,
       'Service: ' + service.name + ' (' + service.minutes + ' min)',
       notes ? 'Notes: ' + notes : null,
+      referredBy ? 'Referred by: ' + referredBy + ' (give $10 off; $10 credit to ' + referredBy + ')' : null,
       body.lang === 'es' ? 'Prefers Spanish / Prefiere español' : null
     ].filter(function (x) { return x !== null; }).join('\n');
 
@@ -268,7 +270,7 @@ function book_(body, now) {
       try {
         saveClient_({
           when: start, service: service.name, minutes: service.minutes,
-          name: name, phone: phone, email: email, notes: notes,
+          name: name, phone: phone, email: email, notes: notes, referredBy: referredBy,
           lang: body.lang === 'es' ? 'Spanish' : 'English'
         }, now);
       } catch (err) { Logger.log('Client sheet error: ' + err); }
@@ -347,7 +349,8 @@ function weekday_(dateStr) {
 
 // ─── Client list (Google Sheet) ─────────────────────────────────────────────
 
-var BOOKING_HEADERS = ['Booked at', 'Appointment', 'Service', 'Minutes', 'Name', 'Phone', 'Email', 'Language', 'Notes'];
+var BOOKING_HEADERS = ['Booked at', 'Appointment', 'Service', 'Minutes', 'Name', 'Phone', 'Email', 'Language', 'Notes', 'Referred by'];
+var REFERRAL_HEADERS = ['Booked at', 'New client', 'New client phone', 'Appointment', 'Referred by', "Friend's $10 off used", "Referrer's $10 credit given", 'Notes'];
 var CLIENT_HEADERS = ['Name', 'Phone', 'Email', 'Language', 'First booking', 'Last appointment', 'Online bookings', 'Last service', 'Notes'];
 
 /** The client spreadsheet, created on first use; its id is remembered in Script Properties. */
@@ -380,8 +383,14 @@ function saveClient_(b, now) {
   var ss = clientSheet_();
   var fmt = function (d) { return Utilities.formatDate(d, CONFIG.TIMEZONE, 'yyyy-MM-dd HH:mm'); };
   ss.getSheetByName('Bookings').appendRow([
-    fmt(now), fmt(b.when), cell_(b.service), b.minutes, cell_(b.name), cell_(b.phone), cell_(b.email), b.lang, cell_(b.notes)
+    fmt(now), fmt(b.when), cell_(b.service), b.minutes, cell_(b.name), cell_(b.phone), cell_(b.email), b.lang, cell_(b.notes), cell_(b.referredBy)
   ]);
+
+  if (b.referredBy) {
+    var refs = referralsSheet_(ss);
+    refs.appendRow([fmt(now), cell_(b.name), cell_(b.phone), fmt(b.when), cell_(b.referredBy), false, false, '']);
+    try { refs.getRange(refs.getLastRow(), 6, 1, 2).insertCheckboxes(); } catch (ignore) {}
+  }
 
   var clients = ss.getSheetByName('Clients');
   var key = b.phone.replace(/\D/g, '').slice(-10);
@@ -397,6 +406,19 @@ function saveClient_(b, now) {
     }
   }
   clients.appendRow([cell_(b.name), cell_(b.phone), cell_(b.email), b.lang, fmt(now), fmt(b.when), 1, cell_(b.service), cell_(b.notes)]);
+}
+
+/** The "Referrals" tab plus a "Top referrers" summary, created when first needed. */
+function referralsSheet_(ss) {
+  var refs = ss.getSheetByName('Referrals');
+  if (refs) return refs;
+  refs = ss.insertSheet('Referrals');
+  refs.appendRow(REFERRAL_HEADERS);
+  refs.setFrozenRows(1);
+  var top = ss.insertSheet('Top referrers');
+  top.getRange(1, 1).setFormula(
+    "=QUERY(Referrals!A:E, \"select E, count(B) where E is not null group by E order by count(B) desc label E 'Referred by', count(B) 'Friends referred'\", 1)");
+  return refs;
 }
 
 /** Run from the editor to print the link to the client spreadsheet. */
