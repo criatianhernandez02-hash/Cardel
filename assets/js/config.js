@@ -65,9 +65,9 @@ window.CARDEL = {
         { id: 'color-correction', minutes: 240, price: 250, from: true,
           en: ["Color Correction", "Fixes uneven, brassy or box-dye color. Final price after consultation."],
           es: ["Corrección de color", "Corrige color disparejo, anaranjado o de caja. Precio final después de la consulta."] },
-        { id: 'color-touchup', minutes: 60, price: 60, from: true,
-          en: ["Color Touch-Up", "Express root refresh, no blow-dry. With haircut and style: from $125."],
-          es: ["Retoque de color", "Retoque exprés de raíz, sin secado. Con corte y peinado: desde $125."] },
+        { id: 'color-touchup', minutes: 75, price: 80, from: true,
+          en: ["Color Touch-Up", "Covers ½ to 1 inch of regrowth. Includes wash and blow-dry. With haircut: from $125."],
+          es: ["Retoque de color", "Cubre de ½ a 1 pulgada de crecimiento. Incluye lavado y secado. Con corte: desde $125."] },
         { id: 'toner', minutes: 30, price: 65, from: true,
           en: ["Toner", "Refresh or neutralize your tone. No blow-dry."],
           es: ["Matizador (toner)", "Refresca o neutraliza el tono. Sin secado."] }
