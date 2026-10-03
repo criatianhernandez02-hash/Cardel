@@ -24,7 +24,7 @@ window.CARDEL = {
     instagram: 'https://www.instagram.com/cardel_designs_hairsalon/',
     facebook: 'https://www.facebook.com/Cardelgirls/',
     // Paste the salon's Google reviews link here (Google Business Profile → "Ask for reviews").
-    googleReviews: 'https://www.google.com/search?q=Cardel+Designs+Hair+Salon+Woodland+CA',
+    googleReviews: 'https://g.page/r/CVkB-FN4YqJyEAI/review',
     directions: 'https://www.google.com/maps/dir/?api=1&destination=Cardel+Designs+Hair+Salon%2C+1810+E+Main+St+Suite+105%2C+Woodland%2C+CA+95776',
     mapEmbed: 'https://www.google.com/maps?q=Cardel+Designs+Hair+Salon,+1810+E+Main+St+Suite+105,+Woodland,+CA+95776&output=embed'
   },
