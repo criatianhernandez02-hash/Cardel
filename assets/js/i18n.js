@@ -18,7 +18,7 @@
     'cta.map': 'Mapa',
     'hero.eyebrow': 'Salón de belleza · Woodland, CA',
     'hero.title': 'Un look diseñado para <em>ti</em>.',
-    'hero.lede': 'Cortes, color, balayage y tratamientos de alaciado con Paty — quien te escucha primero, nunca te apresura y no para hasta que quede exactamente como lo imaginaste.',
+    'hero.lede': 'Cortes, color, balayage y tratamientos de alaciado con Paty — quien te escucha primero y nunca te apresura.',
     'hero.quick': 'Reserva en menos de un minuto',
     'hero.quickSub': 'Horarios en tiempo real, 24/7',
     'hero.card': 'Cortes · Color · Balayage · Permanentes · Keratina',
