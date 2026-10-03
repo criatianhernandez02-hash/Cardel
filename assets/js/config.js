@@ -105,8 +105,8 @@ window.CARDEL = {
       id: 'cuts', en: "Cuts", es: "Cortes", addons: [],
       services: [
         { id: 'curly-cut', minutes: 75, price: 85, from: true,
-          en: ["Curly Specialist Haircut", "Cut curl by curl for shape and definition."],
-          es: ["Corte especial para rizos", "Corte rizo por rizo para forma y definición."] },
+          en: ["Curly Hair Haircut", "Cut curl by curl for shape and definition."],
+          es: ["Corte para cabello rizado", "Corte rizo por rizo para forma y definición."] },
         { id: 'teen-cut', minutes: 45, price: 45, from: false,
           en: ["Teen Haircut (13–17)", "Cut and style for ages 13 to 17."],
           es: ["Corte juvenil (13–17)", "Corte y peinado de 13 a 17 años."] },

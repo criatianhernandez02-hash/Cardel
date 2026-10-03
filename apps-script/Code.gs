@@ -52,7 +52,7 @@ var CONFIG = {
     'partial-highlights': { name: "Partial Highlights", minutes: 120 },
     'perm-short':         { name: "Perm, Short to Medium Hair", minutes: 120 },
     'perm-long':          { name: "Perm, Long Hair", minutes: 150 },
-    'curly-cut':          { name: "Curly Specialist Haircut", minutes: 75 },
+    'curly-cut':          { name: "Curly Hair Haircut", minutes: 75 },
     'teen-cut':           { name: "Teen Haircut (13–17)", minutes: 45 },
     'kids-cut':           { name: "Kids Haircut (12 & under)", minutes: 30 },
     'bang-trim':          { name: "Bang Trim", minutes: 15 },
