@@ -122,6 +122,16 @@ a.pill:hover { border-color: var(--ink); color: var(--ink); }
 .hero h1 em { color: var(--accent); }
 .lede { font-size: 1.12rem; line-height: 1.7; color: var(--muted); max-width: 32em; }
 .se-habla { color: var(--accent); }
+.hero-offer {
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; margin-top: 22px; padding: 10px 16px 10px 10px;
+  border: 1px solid var(--accent); border-radius: var(--radius); background: #fff5f5;
+  color: var(--ink); text-decoration: none; font-size: .98rem; line-height: 1.4;
+}
+.hero-offer:hover { background: #ffecec; }
+.hero-offer-tag {
+  flex: none; padding: 5px 10px; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+  font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+}
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 22px; }
 .hero-ctas .btn { flex: 1 1 200px; }
 @media (min-width: 600px) { .hero-ctas .btn { flex: 0 0 auto; } }
