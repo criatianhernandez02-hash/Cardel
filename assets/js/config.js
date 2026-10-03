@@ -49,15 +49,17 @@ window.CARDEL = {
   addons: {
     haircut: { price: 45, minutes: 45,
       en: 'Add a haircut and style', es: 'Agregar corte y peinado', short: { en: 'Haircut', es: 'Corte' } },
-    olaplex: { price: 30, minutes: 15,
-      en: 'Add Olaplex bond protection', es: 'Agregar protección Olaplex', short: { en: 'Olaplex', es: 'Olaplex' } }
+    olaplex: { price: 50, minutes: 15,
+      en: 'Add Olaplex bond protection', es: 'Agregar protección Olaplex', short: { en: 'Olaplex', es: 'Olaplex' } },
+    protein: { price: 40, minutes: 15,
+      en: 'Add a protein mask', es: 'Agregar mascarilla de proteína', short: { en: 'Protein Mask', es: 'Mascarilla de proteína' } }
   },
 
   // Services. price in dollars; from: true shows "from $X", false shows the exact price.
   // addons = which add-ons a group's services can take.
   serviceGroups: [
     {
-      id: 'color', en: "Color", es: "Color", addons: ['haircut', 'olaplex'],
+      id: 'color', en: "Color", es: "Color", addons: ['haircut', 'olaplex', 'protein'],
       services: [
         { id: 'double-process', minutes: 180, price: 250, from: true,
           en: ["Double Process / Fashion Color", "Lift and tone for bold, vivid or fashion shades."],
@@ -74,7 +76,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'highlights', en: "Highlights & Balayage", es: "Luces y balayage", addons: ['haircut', 'olaplex'],
+      id: 'highlights', en: "Highlights & Balayage", es: "Luces y balayage", addons: ['haircut', 'olaplex', 'protein'],
       services: [
         { id: 'balayage', minutes: 180, price: 245, from: true,
           en: ["Balayage", "Hand-painted, soft, low-maintenance color. Long hair: $300."],
@@ -91,7 +93,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'perms', en: "Perms", es: "Permanentes", addons: ['haircut'],
+      id: 'perms', en: "Perms", es: "Permanentes", addons: ['haircut', 'protein'],
       services: [
         { id: 'perm-short', minutes: 120, price: 165, from: true,
           en: ["Perm, Short to Medium Hair", "Lasting curl or wave."],
@@ -102,7 +104,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'cuts', en: "Cuts", es: "Cortes", addons: [],
+      id: 'cuts', en: "Cuts", es: "Cortes", addons: ['protein'],
       services: [
         { id: 'womens-cut', minutes: 45, price: 45, from: true,
           en: ["Women's Haircut", "Consultation, cut and style."],
@@ -125,7 +127,7 @@ window.CARDEL = {
       ]
     },
     {
-      id: 'treatments', en: "Treatments & Smoothing", es: "Tratamientos y alaciado", addons: ['haircut'],
+      id: 'treatments', en: "Treatments & Smoothing", es: "Tratamientos y alaciado", addons: ['haircut', 'protein'],
       services: [
         { id: 'keratin', minutes: 180, price: 250, from: false,
           en: ["Keratin Treatment", "Smooth, frizz-free hair for weeks."],
