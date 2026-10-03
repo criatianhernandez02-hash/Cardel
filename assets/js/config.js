@@ -104,6 +104,12 @@ window.CARDEL = {
     {
       id: 'cuts', en: "Cuts", es: "Cortes", addons: [],
       services: [
+        { id: 'womens-cut', minutes: 45, price: 45, from: true,
+          en: ["Women's Haircut", "Consultation, cut and style."],
+          es: ["Corte de dama", "Consulta, corte y peinado."] },
+        { id: 'mens-cut', minutes: 30, price: 35, from: true,
+          en: ["Men's Haircut", "Clean, classic or modern cut."],
+          es: ["Corte de caballero", "Corte limpio, clásico o moderno."] },
         { id: 'curly-cut', minutes: 75, price: 85, from: true,
           en: ["Curly Hair Haircut", "Cut curl by curl for shape and definition."],
           es: ["Corte para cabello rizado", "Corte rizo por rizo para forma y definición."] },
