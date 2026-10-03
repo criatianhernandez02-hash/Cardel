@@ -8,8 +8,7 @@ window.CARDEL = {
   name: 'Cardel Designs Hair Salon',
   owner: 'Paty',
 
-  // TODO: replace with the salon's real number (this is a placeholder).
-  phone: '(530) 555-0123',
+  phone: '(530) 867-0883',
 
   address: {
     street: '1810 E Main St, Suite 105',
