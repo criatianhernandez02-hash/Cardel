@@ -155,7 +155,7 @@ window.CARDEL = {
     { src: 'assets/img/gallery/balayage-waves.webp', en: 'Balayage with soft waves', es: 'Balayage con ondas suaves' },
     { src: 'assets/img/gallery/blonde-waves.webp', en: 'Dimensional blonde, blown-out waves', es: 'Rubio con dimensión y ondas' },
     { src: 'assets/img/gallery/highlights-copper.webp', en: 'Copper highlights, sleek finish', es: 'Luces cobrizas, acabado liso' },
-    { src: 'assets/img/gallery/blonde-curls.webp', en: 'Blonde curls for a special occasion', es: 'Rizos rubios para ocasión especial' }
+    { src: 'assets/img/gallery/blonde-curls.webp', en: 'Soft blonde curls', es: 'Rizos rubios suaves' }
   ],
 
   // Photo of Paty for the "Meet your stylist" circle. Empty = red "P" monogram.
