@@ -46,63 +46,94 @@ window.CARDEL = {
   // (the booking calendar works but shows sample times and books nothing).
   bookingEndpoint: 'https://script.google.com/macros/s/AKfycbw7_fY7GXC4NlSPfp6rItCy9Y49vB_LPXRUU3_fv49ra1SiibMR7t4RNzx1ERKkDKyy/exec',
 
-  // Services. ids MUST match SERVICES in apps-script/Code.gs.
-  // price = "from" price in dollars. TODO: confirm every price with Paty.
+  // Add-ons clients can tick when booking (price in dollars, minutes added to the booking).
+  addons: {
+    haircut: { price: 45, minutes: 45,
+      en: 'Add a haircut and style', es: 'Agregar corte y peinado', short: { en: 'Haircut', es: 'Corte' } },
+    olaplex: { price: 30, minutes: 15,
+      en: 'Add Olaplex bond protection', es: 'Agregar protección Olaplex', short: { en: 'Olaplex', es: 'Olaplex' } }
+  },
+
+  // Services. price in dollars; from: true shows "from $X", false shows the exact price.
+  // addons = which add-ons a group's services can take.
   serviceGroups: [
     {
-      id: 'cuts', en: 'Cuts', es: 'Cortes',
+      id: 'color', en: "Color", es: "Color", addons: ['haircut', 'olaplex'],
       services: [
-        { id: 'womens-cut', minutes: 60, price: 45,
-          en: ["Women's Haircut & Style", 'Consultation, shampoo, precision cut and finish.'],
-          es: ['Corte y peinado de dama', 'Consulta, lavado, corte a detalle y peinado.'] },
-        { id: 'mens-cut', minutes: 30, price: 25,
-          en: ["Men's Haircut", 'Clean, tailored cut with a sharp finish.'],
-          es: ['Corte de caballero', 'Corte limpio y a tu medida.'] },
-        { id: 'kids-cut', minutes: 30, price: 20,
-          en: ['Kids Haircut (12 & under)', 'Patient, friendly cuts for little ones.'],
-          es: ['Corte de niños (12 y menores)', 'Cortes con paciencia para los pequeños.'] }
+        { id: 'double-process', minutes: 180, price: 250, from: true,
+          en: ["Double Process / Fashion Color", "Lift and tone for bold, vivid or fashion shades."],
+          es: ["Doble proceso / Color fantasía", "Decoloración y tono para colores intensos o de fantasía."] },
+        { id: 'color-correction', minutes: 240, price: 250, from: true,
+          en: ["Color Correction", "Fixes uneven, brassy or box-dye color. Final price after consultation."],
+          es: ["Corrección de color", "Corrige color disparejo, anaranjado o de caja. Precio final después de la consulta."] },
+        { id: 'color-touchup', minutes: 60, price: 60, from: true,
+          en: ["Color Touch-Up", "Express root refresh, no blow-dry. With haircut and style: from $125."],
+          es: ["Retoque de color", "Retoque exprés de raíz, sin secado. Con corte y peinado: desde $125."] },
+        { id: 'toner', minutes: 30, price: 65, from: true,
+          en: ["Toner", "Refresh or neutralize your tone. No blow-dry."],
+          es: ["Matizador (toner)", "Refresca o neutraliza el tono. Sin secado."] }
       ]
     },
     {
-      id: 'color', en: 'Color', es: 'Color',
+      id: 'highlights', en: "Highlights & Balayage", es: "Luces y balayage", addons: ['haircut', 'olaplex'],
       services: [
-        { id: 'root-touchup', minutes: 90, price: 65,
-          en: ['Root Touch-Up', 'Refresh regrowth and cover grays.'],
-          es: ['Retoque de raíz', 'Cubre canas y crecimiento.'] },
-        { id: 'all-over-color', minutes: 120, price: 85,
-          en: ['All-Over Color', 'Rich, even color from root to ends.'],
-          es: ['Tinte completo', 'Color uniforme de raíz a puntas.'] },
-        { id: 'highlights', minutes: 150, price: 110,
-          en: ['Highlights', 'Partial or full foils for brightness and dimension.'],
-          es: ['Rayitos / Luces', 'Parciales o completos para dar luz y dimensión.'] },
-        { id: 'balayage', minutes: 180, price: 150,
-          en: ['Balayage / Ombré', 'Hand-painted, soft, grown-out-friendly color.'],
-          es: ['Balayage / Ombré', 'Color pintado a mano, natural y de bajo mantenimiento.'] }
+        { id: 'balayage', minutes: 180, price: 245, from: true,
+          en: ["Balayage", "Hand-painted, soft, low-maintenance color. Long hair: $300."],
+          es: ["Balayage", "Color pintado a mano, natural y de bajo mantenimiento. Cabello largo: $300."] },
+        { id: 'babylights', minutes: 180, price: 220, from: true,
+          en: ["Babylights", "Ultra-fine highlights for a natural glow."],
+          es: ["Babylights", "Luces muy finas para un brillo natural."] },
+        { id: 'full-highlights', minutes: 150, price: 195, from: true,
+          en: ["Full Highlights", "Brightness and dimension all over."],
+          es: ["Luces completas", "Luz y dimensión en todo el cabello."] },
+        { id: 'partial-highlights', minutes: 120, price: 140, from: true,
+          en: ["Partial Highlights", "Around the face and the top layer."],
+          es: ["Luces parciales", "Alrededor del rostro y la capa de arriba."] }
       ]
     },
     {
-      id: 'occasions', en: 'Styling & Occasions', es: 'Peinados y eventos',
+      id: 'perms', en: "Perms", es: "Permanentes", addons: ['haircut'],
       services: [
-        { id: 'blowout', minutes: 45, price: 35,
-          en: ['Wash & Blowout', 'Smooth, bouncy, camera-ready hair.'],
-          es: ['Lavado y secado (blowout)', 'Cabello liso, con volumen y listo.'] },
-        { id: 'updo', minutes: 75, price: 65,
-          en: ['Special Occasion Updo', 'Weddings, proms, parties, photos.'],
-          es: ['Peinado para evento', 'Bodas, graduaciones, fiestas y fotos.'] },
-        { id: 'quince-bridal', minutes: 120, price: 120,
-          en: ['Quinceañera / Bridal Hair', 'Trial and day-of styling for your big day. Accessories available.'],
-          es: ['Peinado de quinceañera / novia', 'Prueba y peinado para tu gran día. Accesorios disponibles.'] }
+        { id: 'perm-short', minutes: 120, price: 165, from: true,
+          en: ["Perm, Short to Medium Hair", "Lasting curl or wave."],
+          es: ["Permanente, cabello corto a mediano", "Rizo u onda duradera."] },
+        { id: 'perm-long', minutes: 150, price: 180, from: true,
+          en: ["Perm, Long Hair", "Lasting curl or wave for long hair."],
+          es: ["Permanente, cabello largo", "Rizo u onda duradera para cabello largo."] }
       ]
     },
     {
-      id: 'care', en: 'Care', es: 'Cuidado',
+      id: 'cuts', en: "Cuts", es: "Cortes", addons: [],
       services: [
-        { id: 'treatment', minutes: 45, price: 35,
-          en: ['Deep Conditioning Treatment', 'Repair and shine for dry or color-treated hair.'],
-          es: ['Tratamiento de hidratación profunda', 'Repara y da brillo al cabello seco o teñido.'] },
-        { id: 'consultation', minutes: 15, price: 0,
-          en: ['Free Consultation', 'Not sure what you need? Let’s talk it through first.'],
-          es: ['Consulta gratis', '¿No sabes qué necesitas? Platiquemos primero.'] }
+        { id: 'curly-cut', minutes: 75, price: 85, from: true,
+          en: ["Curly Specialist Haircut", "Cut curl by curl for shape and definition."],
+          es: ["Corte especial para rizos", "Corte rizo por rizo para forma y definición."] },
+        { id: 'teen-cut', minutes: 45, price: 45, from: false,
+          en: ["Teen Haircut (13–17)", "Cut and style for ages 13 to 17."],
+          es: ["Corte juvenil (13–17)", "Corte y peinado de 13 a 17 años."] },
+        { id: 'kids-cut', minutes: 30, price: 35, from: false,
+          en: ["Kids Haircut (12 & under)", "Patient, friendly cuts for little ones."],
+          es: ["Corte de niños (12 y menores)", "Cortes con paciencia para los pequeños."] },
+        { id: 'bang-trim', minutes: 15, price: 15, from: false,
+          en: ["Bang Trim", "A quick fringe clean-up."],
+          es: ["Corte de fleco", "Arreglo rápido de fleco."] }
+      ]
+    },
+    {
+      id: 'treatments', en: "Treatments & Smoothing", es: "Tratamientos y alaciado", addons: ['haircut'],
+      services: [
+        { id: 'keratin', minutes: 180, price: 250, from: false,
+          en: ["Keratin Treatment", "Smooth, frizz-free hair for weeks."],
+          es: ["Tratamiento de keratina", "Cabello liso y sin frizz por semanas."] },
+        { id: 'brazilian-express', minutes: 90, price: 145, from: true,
+          en: ["Brazilian Blowout Express", "A faster smoothing treatment that cuts frizz."],
+          es: ["Brazilian Blowout exprés", "Alaciado rápido que reduce el frizz."] },
+        { id: 'olaplex-repair', minutes: 30, price: 75, from: true,
+          en: ["Olaplex Repair Treatment", "Rebuilds damaged or lightened hair. No blow-dry; with blow-dry $85."],
+          es: ["Tratamiento reparador Olaplex", "Reconstruye el cabello dañado o decolorado. Sin secado; con secado $85."] },
+        { id: 'deep-conditioning', minutes: 45, price: 50, from: true,
+          en: ["Deep Conditioning Treatment", "Moisture and shine for dry or color-treated hair."],
+          es: ["Tratamiento de hidratación profunda", "Hidratación y brillo para cabello seco o teñido."] }
       ]
     }
   ],

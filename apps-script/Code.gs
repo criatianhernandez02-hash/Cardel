@@ -39,21 +39,27 @@ var CONFIG = {
   MIN_NOTICE_HOURS: 1,     // no bookings sooner than this from now (0.5 = 30 min)
   MAX_DAYS_AHEAD: 60,      // how far ahead clients can book
 
-  // Service ids MUST match the ids in assets/js/config.js.
-  // minutes = how long the calendar is blocked for that service.
+  // Default length of each service. The website also sends the length (with add-ons),
+  // so new services added on the website work without redeploying this script.
   SERVICES: {
-    'womens-cut':      { name: "Women's Haircut & Style",  minutes: 60 },
-    'mens-cut':        { name: "Men's Haircut",            minutes: 30 },
-    'kids-cut':        { name: 'Kids Haircut (12 & under)', minutes: 30 },
-    'blowout':         { name: 'Wash & Blowout',            minutes: 45 },
-    'root-touchup':    { name: 'Root Touch-Up',             minutes: 90 },
-    'all-over-color':  { name: 'All-Over Color',            minutes: 120 },
-    'highlights':      { name: 'Highlights',                minutes: 150 },
-    'balayage':        { name: 'Balayage / Ombré',          minutes: 180 },
-    'updo':            { name: 'Special Occasion Updo',     minutes: 75 },
-    'quince-bridal':   { name: 'Quinceañera / Bridal Hair', minutes: 120 },
-    'treatment':       { name: 'Deep Conditioning Treatment', minutes: 45 },
-    'consultation':    { name: 'Free Consultation',         minutes: 15 }
+    'double-process':     { name: "Double Process / Fashion Color", minutes: 180 },
+    'color-correction':   { name: "Color Correction", minutes: 240 },
+    'color-touchup':      { name: "Color Touch-Up", minutes: 60 },
+    'toner':              { name: "Toner", minutes: 30 },
+    'balayage':           { name: "Balayage", minutes: 180 },
+    'babylights':         { name: "Babylights", minutes: 180 },
+    'full-highlights':    { name: "Full Highlights", minutes: 150 },
+    'partial-highlights': { name: "Partial Highlights", minutes: 120 },
+    'perm-short':         { name: "Perm, Short to Medium Hair", minutes: 120 },
+    'perm-long':          { name: "Perm, Long Hair", minutes: 150 },
+    'curly-cut':          { name: "Curly Specialist Haircut", minutes: 75 },
+    'teen-cut':           { name: "Teen Haircut (13–17)", minutes: 45 },
+    'kids-cut':           { name: "Kids Haircut (12 & under)", minutes: 30 },
+    'bang-trim':          { name: "Bang Trim", minutes: 15 },
+    'keratin':            { name: "Keratin Treatment", minutes: 180 },
+    'brazilian-express':  { name: "Brazilian Blowout Express", minutes: 90 },
+    'olaplex-repair':     { name: "Olaplex Repair Treatment", minutes: 30 },
+    'deep-conditioning':  { name: "Deep Conditioning Treatment", minutes: 45 }
   },
 
   // Colour of online-booking events in her calendar (CalendarApp.EventColor).
@@ -73,7 +79,7 @@ function doGet(e) {
   try {
     var p = (e && e.parameter) || {};
     if (p.action === 'availability') {
-      return json_(getAvailability_(p.service, p.from, Number(p.days) || 14, new Date()));
+      return json_(getAvailability_(p.service, p.from, Number(p.days) || 14, new Date(), p.minutes, p.label));
     }
     if (p.action === 'ping') {
       return json_({ ok: true, timezone: CONFIG.TIMEZONE });
@@ -97,8 +103,23 @@ function doPost(e) {
 
 // ─── Availability ───────────────────────────────────────────────────────────
 
-function getAvailability_(serviceId, fromStr, days, now) {
-  var service = CONFIG.SERVICES[serviceId];
+/**
+ * The service being booked: its name and how long it blocks the calendar.
+ * The website sends the total length (service + add-ons) and a label, so a
+ * service added on the website works even if it isn't in SERVICES yet.
+ */
+function resolveService_(serviceId, minutes, label) {
+  var known = CONFIG.SERVICES[serviceId];
+  var m = Math.round(Number(minutes) / 15) * 15;
+  if (!(m >= 15 && m <= 360)) m = known ? known.minutes : 0;
+  if (!m) return null;
+  var name = clean_(label, 120) || (known && known.name) || clean_(serviceId, 60);
+  if (!name) return null;
+  return { name: name, minutes: m };
+}
+
+function getAvailability_(serviceId, fromStr, days, now, minutes, label) {
+  var service = resolveService_(serviceId, minutes, label);
   if (!service) return { ok: false, error: 'unknown_service' };
 
   days = Math.max(1, Math.min(days, 31));
@@ -182,7 +203,7 @@ function book_(body, now) {
   // Honeypot field: real visitors never fill it in.
   if (body.website) return { ok: false, error: 'rejected' };
 
-  var service = CONFIG.SERVICES[body.service];
+  var service = resolveService_(body.service, body.minutes, body.label);
   if (!service) return { ok: false, error: 'unknown_service' };
   if (!isDateStr_(body.date) || !/^\d{2}:\d{2}$/.test(body.time || '')) {
     return { ok: false, error: 'bad_time' };

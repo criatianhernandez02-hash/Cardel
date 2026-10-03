@@ -368,3 +368,15 @@ details p { color: var(--ink-2); padding-bottom: 12px; }
   .icon-btn { display: none; }
   .date-chip { width: 60px; }
 }
+
+/* Add-ons: under the menu and in the booking form */
+.menu-addons { grid-column: 1 / -1; background: var(--bg-alt); border-radius: var(--radius); padding: 20px 24px 8px; }
+.menu-addons h3 { font: 600 1.25rem/1 var(--display); margin-bottom: 8px; }
+.menu-addons ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px 48px; }
+@media (min-width: 900px) { .menu-addons ul { grid-template-columns: 1fr 1fr; } }
+.menu-addons li { display: grid; gap: 2px; padding: 10px 0; }
+.addon-box { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 14px 12px; margin: 14px 0 0; }
+.addon-box legend { font-weight: 600; font-size: .92rem; padding: 0 6px; }
+.addon { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: .97rem; }
+.addon input { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
+.addon b { margin-left: auto; color: var(--accent); }

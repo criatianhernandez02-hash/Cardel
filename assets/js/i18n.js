@@ -32,7 +32,7 @@
     'p4.d': 'Peinados de quinceañera, novia y eventos — y accesorios.',
     'svc.eyebrow': 'Servicios y precios',
     'svc.title': 'Menú',
-    'svc.note': 'Los precios son “desde”; el precio final depende del largo, el grosor y el producto. Toca cualquier servicio para reservarlo.',
+    'svc.note': 'Los precios “desde” son precios iniciales; el precio final depende del largo, el grosor y el producto. Toca cualquier servicio para reservarlo.',
     'about.eyebrow': 'Conoce a tu estilista',
     'about.title': 'Hola, soy Paty.',
     'about.p1': 'Cardel Designs es mi salón en la calle East Main en Woodland. Lo mantengo pequeño a propósito: cuando te sientas en mi silla, tienes toda mi atención desde la primera pregunta hasta el último vistazo al espejo.',
@@ -103,7 +103,7 @@
       err_too_many: 'Too many bookings from this number. Please call the salon.',
       err_generic: 'Something went wrong. Please try again or call the salon.',
       galleryEmpty: 'See Paty’s latest cuts, color and event styles on Instagram.', galleryBtn: 'Open Instagram', galleryMore: 'See more on Instagram →',
-      change: 'Change', langBtn: 'ES', langLabel: 'Cambiar a español'
+      change: 'Change', langBtn: 'ES', addonsTitle: 'Add-ons', addonWith: 'With', addonPick: 'Add to your appointment', langLabel: 'Cambiar a español'
     },
     es: {
       openNow: 'Abierto · hasta las {t}', closedNow: 'Cerrado ahora', opensAt: 'Abre el {d} a las {t}',
@@ -121,7 +121,7 @@
       err_too_many: 'Demasiadas reservas con este número. Por favor llama al salón.',
       err_generic: 'Algo salió mal. Intenta de nuevo o llama al salón.',
       galleryEmpty: 'Mira los cortes, colores y peinados más recientes de Paty en Instagram.', galleryBtn: 'Abrir Instagram', galleryMore: 'Ver más en Instagram →',
-      change: 'Cambiar', langBtn: 'EN', langLabel: 'Switch to English'
+      change: 'Cambiar', langBtn: 'EN', addonsTitle: 'Extras', addonWith: 'Con', addonPick: 'Agrega a tu cita', langLabel: 'Switch to English'
     }
   };
 

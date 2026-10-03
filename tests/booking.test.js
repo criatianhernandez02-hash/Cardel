@@ -83,13 +83,13 @@ console.log('Booking backend');
 
 test('closed days return no slots', () => {
   const { ctx } = makeEnv();
-  const r = ctx.getAvailability_('mens-cut', '2026-10-04', 2, NOW); // Sun, Mon
+  const r = ctx.getAvailability_('kids-cut', '2026-10-04', 2, NOW); // Sun, Mon
   assert.strictEqual(r.days['2026-10-05'].length, 0);
 });
 
 test('open day lists slots within hours, service must finish by close', () => {
   const { ctx } = makeEnv();
-  const slots = ctx.getAvailability_('womens-cut', TUE, 1, NOW).days[TUE];
+  const slots = ctx.getAvailability_('color-touchup', TUE, 1, NOW).days[TUE];
   assert.strictEqual(slots[0], '10:00');
   assert.strictEqual(slots[slots.length - 1], '17:00'); // 60 min → last start 17:00
 });
@@ -97,7 +97,7 @@ test('open day lists slots within hours, service must finish by close', () => {
 test('an event she adds by hand blocks that time (plus buffer)', () => {
   const { ctx, events } = makeEnv();
   events.push({ start: parseLocal(TUE + ' 12:00'), end: parseLocal(TUE + ' 13:00') });
-  const slots = ctx.getAvailability_('mens-cut', TUE, 1, NOW).days[TUE];
+  const slots = ctx.getAvailability_('kids-cut', TUE, 1, NOW).days[TUE];
   assert.ok(!slots.includes('11:30'), '11:30 + 30m + 10m buffer runs into 12:00');
   assert.ok(!slots.includes('12:00') && !slots.includes('12:30') && !slots.includes('13:00'));
   assert.ok(slots.includes('11:00') && slots.includes('13:30'));
@@ -106,23 +106,23 @@ test('an event she adds by hand blocks that time (plus buffer)', () => {
 test('all-day event (vacation) blocks the whole day', () => {
   const { ctx, events } = makeEnv();
   events.push({ allDay: true, start: parseLocal(TUE + ' 00:00'), end: parseLocal('2026-10-09 00:00') });
-  assert.strictEqual(ctx.getAvailability_('mens-cut', TUE, 1, NOW).days[TUE].length, 0);
+  assert.strictEqual(ctx.getAvailability_('kids-cut', TUE, 1, NOW).days[TUE].length, 0);
 });
 
 test('declined invitations do not block time', () => {
   const { ctx, events } = makeEnv();
   events.push({ start: parseLocal(TUE + ' 10:00'), end: parseLocal(TUE + ' 18:00'), status: 'NO' });
-  assert.ok(ctx.getAvailability_('mens-cut', TUE, 1, NOW).days[TUE].length > 0);
+  assert.ok(ctx.getAvailability_('kids-cut', TUE, 1, NOW).days[TUE].length > 0);
 });
 
 test('minimum notice hides slots too close to now', () => {
   const { ctx } = makeEnv();
   const now = parseLocal(TUE + ' 11:10');
-  const slots = ctx.getAvailability_('mens-cut', TUE, 1, now).days[TUE];
+  const slots = ctx.getAvailability_('kids-cut', TUE, 1, now).days[TUE];
   assert.strictEqual(slots[0], '12:30'); // 1h notice → 12:10 → next slot 12:30
 });
 
-const client = { service: 'mens-cut', date: TUE, time: '10:00', name: 'Ana Lopez', phone: '(530) 555-0199', email: 'ana@example.com' };
+const client = { service: 'kids-cut', date: TUE, time: '10:00', name: 'Ana Lopez', phone: '(530) 555-0199', email: 'ana@example.com' };
 
 test('booking creates a calendar event and invites the client', () => {
   const { ctx, events } = makeEnv();
@@ -145,7 +145,7 @@ test('the same slot cannot be booked twice', () => {
 test('an online booking removes overlapping slots for longer services', () => {
   const { ctx } = makeEnv();
   ctx.book_({ ...client, time: '13:00' }, NOW);
-  const slots = ctx.getAvailability_('highlights', TUE, 1, NOW).days[TUE];
+  const slots = ctx.getAvailability_('full-highlights', TUE, 1, NOW).days[TUE];
   assert.ok(slots.includes('10:00'), '10:00 + 150m = 12:30, +10m buffer = 12:40, clear of 13:00');
   assert.ok(!slots.includes('10:30'), '10:30 + 150m = 13:00 leaves no buffer');
   assert.ok(!slots.includes('12:00') && slots.includes('13:40') === false && slots.includes('14:00'));
@@ -172,7 +172,37 @@ test('DST change day (Nov 1 2026) still produces correct local times', () => {
   const r = ctx.book_({ ...client, date: tue, time: '15:00' }, now);
   assert.ok(r.ok);
   assert.strictEqual(formatLocal(events[0].start, 'yyyy-MM-dd HH:mm'), tue + ' 15:00');
-  assert.strictEqual(ctx.getAvailability_('mens-cut', sat, 1, now).days[sat][0], '09:00');
+  assert.strictEqual(ctx.getAvailability_('kids-cut', sat, 1, now).days[sat][0], '09:00');
+});
+
+
+console.log('Add-ons and new services');
+
+test('the website can send a longer length (service + haircut add-on)', () => {
+  const { ctx, events } = makeEnv();
+  const r = ctx.book_({ ...client, service: 'balayage', minutes: 225, label: 'Balayage + haircut', time: '10:00' }, NOW);
+  assert.ok(r.ok);
+  assert.strictEqual(formatLocal(events[0].end, 'yyyy-MM-dd HH:mm'), TUE + ' 13:45');
+  assert.ok(events[0].title.startsWith('Balayage + haircut'));
+});
+
+test('a service not in the script list still books with its length', () => {
+  const { ctx, events } = makeEnv();
+  const r = ctx.book_({ ...client, service: 'brand-new', minutes: 50, label: 'Gloss', time: '10:00' }, NOW);
+  assert.ok(r.ok);
+  assert.strictEqual(formatLocal(events[0].end, 'yyyy-MM-dd HH:mm'), TUE + ' 10:45'); // rounded to 45
+});
+
+test('availability uses the length sent by the website', () => {
+  const { ctx } = makeEnv();
+  const slots = ctx.getAvailability_('kids-cut', TUE, 1, NOW, 120, 'x').days[TUE];
+  assert.strictEqual(slots[slots.length - 1], '16:00'); // 2h must end by 18:00
+});
+
+test('silly lengths fall back to the service default', () => {
+  const { ctx, events } = makeEnv();
+  assert.ok(ctx.book_({ ...client, minutes: 9999, time: '10:00' }, NOW).ok);
+  assert.strictEqual(formatLocal(events[0].end, 'yyyy-MM-dd HH:mm'), TUE + ' 10:30');
 });
 
 console.log(`\n${passed} passed`);

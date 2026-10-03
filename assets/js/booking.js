@@ -7,11 +7,31 @@
   var MAX_AHEAD = 60;       // keep equal to MAX_DAYS_AHEAD in Code.gs
   var DEMO = !C.bookingEndpoint;
 
-  var state = { service: null, from: null, date: null, time: null, days: {} };
+  var state = { service: null, from: null, date: null, time: null, days: {}, addons: {} };
   var cache = {};
 
   var services = {};
-  C.serviceGroups.forEach(function (g) { g.services.forEach(function (s) { services[s.id] = s; }); });
+  var groupOf = {};
+  C.serviceGroups.forEach(function (g) { g.services.forEach(function (s) { services[s.id] = s; groupOf[s.id] = g; }); });
+
+  // The chosen service plus ticked add-ons: total length, price and labels.
+  function addonIds() {
+    var allowed = groupOf[state.service] ? (groupOf[state.service].addons || []) : [];
+    return allowed.filter(function (id) { return state.addons[id] && C.addons && C.addons[id]; });
+  }
+  function current() {
+    var s = services[state.service], ids = addonIds(), L = I18N.lang;
+    var label = function (lang) {
+      return s[lang][0] + ids.map(function (id) { return ' + ' + C.addons[id].short[lang]; }).join('');
+    };
+    return {
+      s: s,
+      minutes: s.minutes + ids.reduce(function (n, id) { return n + C.addons[id].minutes; }, 0),
+      price: s.price + ids.reduce(function (n, id) { return n + C.addons[id].price; }, 0),
+      label: label(L), labelEn: label('en')
+    };
+  }
+  function cacheKey() { return state.service + '|' + current().minutes + '|' + state.from; }
 
   // ── Date helpers (all dates are "YYYY-MM-DD" in the salon's timezone) ──
   function todayStr() {
@@ -32,10 +52,11 @@
 
   // ── Data ────────────────────────────────────────────────────────────────
   function fetchDays(serviceId, from) {
-    var key = serviceId + '|' + from;
+    var cur = current(), key = cacheKey();
     if (cache[key]) return Promise.resolve(cache[key]);
     var p = DEMO ? demoDays(serviceId, from) :
       fetch(C.bookingEndpoint + '?action=availability&service=' + encodeURIComponent(serviceId) +
+        '&minutes=' + cur.minutes + '&label=' + encodeURIComponent(cur.labelEn) +
         '&from=' + from + '&days=' + WINDOW)
         .then(function (r) { return r.json(); })
         .then(function (j) { if (!j.ok) throw new Error(j.error); return j.days; });
@@ -46,7 +67,7 @@
     if (DEMO) {
       return new Promise(function (res) {
         setTimeout(function () {
-          res({ ok: true, date: payload.date, time: payload.time, minutes: services[payload.service].minutes, invited: !!payload.email });
+          res({ ok: true, date: payload.date, time: payload.time, minutes: payload.minutes, invited: !!payload.email });
         }, 700);
       });
     }
@@ -59,7 +80,7 @@
 
   // Preview-only availability: real hours, sample "busy" times.
   function demoDays(serviceId, from) {
-    var minutes = services[serviceId].minutes, out = {};
+    var minutes = current().minutes, out = {};
     var now = new Date(), la = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(now).split(':');
     var nowMin = +la[0] * 60 + +la[1], today = todayStr();
     for (var i = 0; i < WINDOW; i++) {
@@ -97,7 +118,7 @@
     var L = I18N.lang, sel = $('#serviceSelect');
     sel.innerHTML = C.serviceGroups.map(function (g) {
       return '<optgroup label="' + UI.esc(g[L]) + '">' + g.services.map(function (s) {
-        return '<option value="' + s.id + '">' + UI.esc(s[L][0]) + ' — ' + UI.fmtPrice(s.price) + '</option>';
+        return '<option value="' + s.id + '">' + UI.esc(s[L][0]) + ' — ' + UI.fmtPrice(s.price, s.from) + '</option>';
       }).join('') + '</optgroup>';
     }).join('');
     sel.value = state.service || C.serviceGroups[0].services[0].id;
@@ -107,12 +128,21 @@
 
   function renderSummary() {
     var s = services[state.service];
-    $('#svcSummary').textContent = s[I18N.lang][1] + ' · ' + UI.fmtDuration(s.minutes) + ' · ' + UI.fmtPrice(s.price);
+    var L = I18N.lang, allowed = (groupOf[state.service].addons || []).filter(function (id) { return C.addons && C.addons[id]; });
+    var box = $('#addonBox');
+    box.hidden = !allowed.length;
+    box.innerHTML = allowed.length ? '<legend>' + t('addonPick') + '</legend>' + allowed.map(function (id) {
+      var a = C.addons[id];
+      return '<label class="addon"><input type="checkbox" value="' + id + '"' + (state.addons[id] ? ' checked' : '') + '> ' +
+        '<span>' + UI.esc(a[L]) + '</span> <b>+$' + a.price + '</b></label>';
+    }).join('') : '';
+    var cur = current();
+    $('#svcSummary').textContent = s[L][1] + ' · ' + UI.fmtDuration(cur.minutes) + ' · ' + UI.fmtPrice(cur.price, s.from);
   }
 
   function chosenHTML(withTime) {
-    var s = services[state.service];
-    var line = '<strong>' + UI.esc(s[I18N.lang][0]) + '</strong> · ' + UI.fmtDuration(s.minutes);
+    var cur = current();
+    var line = '<strong>' + UI.esc(cur.label) + '</strong> · ' + UI.fmtDuration(cur.minutes);
     if (withTime && state.date && state.time) {
       line += '<br><span class="chosen-when">' + longDate(state.date) + ' · ' + UI.fmtTime(state.time) + '</span>';
     }
@@ -183,6 +213,10 @@
   $('#serviceSelect').addEventListener('change', function (e) {
     state.service = e.target.value; state.date = null; renderSummary();
   });
+  $('#addonBox').addEventListener('change', function (e) {
+    if (!e.target.matches('input[type=checkbox]')) return;
+    state.addons[e.target.value] = e.target.checked; state.date = null; renderSummary();
+  });
   $('#toStep2').addEventListener('click', function () { go(2); });
   $('#prevDays').addEventListener('click', function () {
     state.from = addDays(state.from, -WINDOW);
@@ -230,7 +264,8 @@
     var payload = {
       service: state.service, date: state.date, time: state.time,
       name: f.name.value.trim(), phone: f.phone.value.trim(), email: f.email.value.trim(),
-      notes: f.notes.value.trim(), website: f.website.value, lang: I18N.lang
+      notes: f.notes.value.trim(), website: f.website.value, lang: I18N.lang,
+      minutes: current().minutes, label: current().labelEn, displayLabel: current().label
     };
     var local = payload.name.length < 2 ? 'missing_name'
       : payload.phone.replace(/\D/g, '').length < 10 ? 'bad_phone'
@@ -251,7 +286,7 @@
       var code = r && r.error;
       showError(code);
       if (code === 'slot_taken') {
-        delete cache[state.service + '|' + state.from];
+        delete cache[cacheKey()];
         state.time = null;
         setTimeout(function () { go(2); }, 1800);
       }
@@ -265,16 +300,15 @@
   });
 
   function done(p, r) {
-    var s = services[p.service];
-    $('#doneWhen').innerHTML = '<strong>' + UI.esc(s[I18N.lang][0]) + '</strong><br>' +
+    $('#doneWhen').innerHTML = '<strong>' + UI.esc(p.displayLabel) + '</strong><br>' +
       longDate(p.date) + ' · ' + UI.fmtTime(p.time);
     $('#doneInvite').textContent = r.invited ? t('invited', { e: p.email }) : t('notInvited');
     var start = p.date.replace(/-/g, '') + 'T' + p.time.replace(':', '') + '00';
-    var endM = toMin(p.time) + s.minutes;
+    var endM = toMin(p.time) + p.minutes;
     var end = p.date.replace(/-/g, '') + 'T' + pad(endM).replace(':', '') + '00';
     var a = C.address;
     $('#addToCal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-      '&text=' + encodeURIComponent(s.en[0] + ' — Cardel Designs') +
+      '&text=' + encodeURIComponent(p.label + ' — Cardel Designs') +
       '&dates=' + start + '/' + end + '&ctz=America/Los_Angeles' +
       '&location=' + encodeURIComponent(C.name + ', ' + a.street + ', ' + a.city + ', ' + a.region + ' ' + a.zip) +
       '&details=' + encodeURIComponent('Questions or changes: ' + C.phone);

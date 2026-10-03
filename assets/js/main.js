@@ -29,7 +29,7 @@
     return m ? t('hrsMin', { h: h, m: m }) : t('hrs', { h: h });
   }
 
-  function fmtPrice(p) { return p ? t('from', { p: p }) : t('free'); }
+  function fmtPrice(p, from) { return !p ? t('free') : from === false ? '$' + p : t('from', { p: p }); }
 
   // Current time in the salon's timezone, as { day, minutes }.
   function salonNow() {
@@ -136,12 +136,25 @@
         return '<li><a class="menu-item" href="#book" data-service="' + s.id + '" data-track="book_menu">' +
           '<span class="mi-top"><span class="mi-name">' + esc(s[L][0]) + '</span>' +
           '<span class="mi-dots" aria-hidden="true"></span>' +
-          '<span class="mi-price">' + fmtPrice(s.price) + '</span></span>' +
+          '<span class="mi-price">' + fmtPrice(s.price, s.from) + '</span></span>' +
           '<span class="mi-desc">' + esc(s[L][1]) + '</span>' +
           '<span class="mi-meta">' + fmtDuration(s.minutes) + ' · <span class="mi-book">' + t('bookThis') + ' →</span></span>' +
           '</a></li>';
       }).join('') + '</ul></div>';
-    }).join('');
+    }).join('') + addonNote();
+  }
+
+  // "Add-ons" box under the menu, built from config.addons.
+  function addonNote() {
+    var L = I18N.lang, ids = Object.keys(C.addons || {});
+    if (!ids.length) return '';
+    return '<div class="menu-addons"><h3>' + t('addonsTitle') + '</h3><ul>' + ids.map(function (id) {
+      var a = C.addons[id];
+      var where = C.serviceGroups.filter(function (g) { return (g.addons || []).indexOf(id) > -1; })
+        .map(function (g) { return g[L]; }).join(' · ');
+      return '<li><span class="mi-top"><span class="mi-name">' + esc(a[L]) + '</span><span class="mi-dots" aria-hidden="true"></span>' +
+        '<span class="mi-price">+$' + a.price + '</span></span><span class="mi-desc">' + t('addonWith') + ' ' + esc(where) + '</span></li>';
+    }).join('') + '</ul></div>';
   }
 
   function renderReviews() {

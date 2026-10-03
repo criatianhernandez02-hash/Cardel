@@ -83,7 +83,7 @@
       <header class="section-head">
         <p class="eyebrow" data-i18n="svc.eyebrow">Services &amp; prices</p>
         <h2 data-i18n="svc.title">Menu</h2>
-        <p class="muted" data-i18n="svc.note">Prices are starting prices; final price depends on length, thickness and product. Tap any service to book it.</p>
+        <p class="muted" data-i18n="svc.note">“From” prices are starting prices; the final price depends on length, thickness and product. Tap any service to book it.</p>
       </header>
       <div class="menu" id="serviceMenu"></div>
     </div>
@@ -154,6 +154,7 @@
         <div class="panel" data-panel="1">
           <label class="field-label" for="serviceSelect" data-i18n="book.pick">What are you coming in for?</label>
           <select id="serviceSelect" class="input"></select>
+          <fieldset class="addon-box" id="addonBox" hidden></fieldset>
           <p class="svc-summary" id="svcSummary"></p>
           <button class="btn btn-primary btn-block" type="button" id="toStep2" data-i18n="book.next">See available times</button>
         </div>
